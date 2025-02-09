@@ -73,11 +73,14 @@ void applicationTask(void *param)
 
 void setup()
 {
+  byte _MAC[6];
   Serial.begin(115200);
   delay(1000);
   Serial.println("Starting up");
   // start up wifi
   // launch WiFi
+  WiFi.macAddress(_MAC);
+  Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", _MAC[0], _MAC[1], _MAC[2], _MAC[3], _MAC[4], _MAC[5]);
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PSWD);
   if (WiFi.waitForConnectResult() != WL_CONNECTED)
@@ -90,6 +93,7 @@ void setup()
   Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
   // startup SPIFFS for the wav files
+  // SPIFFS.begin(true);
   SPIFFS.begin();
   // make sure we don't get killed for our long running tasks
   esp_task_wdt_init(10, false);
