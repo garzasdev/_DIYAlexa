@@ -11,6 +11,10 @@
 #include "IntentProcessor.h"
 #include "Speaker.h"
 #include "IndicatorLight.h"
+// #include "PubSubClient.h"
+
+// PubSubClient _MQTTClient;
+// WiFiClient _WIFI;
 
 // i2s config for using the internal ADC
 i2s_config_t adcI2SConfig = {
@@ -74,6 +78,8 @@ void applicationTask(void *param)
 void setup()
 {
   byte _MAC[6];
+  // char _ClientID[8] = "\0";
+
   Serial.begin(115200);
   delay(1000);
   Serial.println("Starting up");
@@ -81,6 +87,8 @@ void setup()
   // launch WiFi
   WiFi.macAddress(_MAC);
   Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", _MAC[0], _MAC[1], _MAC[2], _MAC[3], _MAC[4], _MAC[5]);
+  // sprintf(_ClientID, "%02X%02X%02X", _MAC[3], _MAC[4], _MAC[5]);
+
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PSWD);
   if (WiFi.waitForConnectResult() != WL_CONNECTED)
@@ -134,6 +142,14 @@ void setup()
 #else
   i2s_sampler->start(I2S_NUM_0, adcI2SConfig, applicationTaskHandle);
 #endif
+
+  // // initialize MQTT
+  // _MQTTClient.setClient(_WIFI);
+  // _MQTTClient.setServer("192.168.3.8", 1883);
+  // if (_MQTTClient.connect(_ClientID))
+  // {
+  //   Serial.println("MQTT connected!");
+  // }
 }
 
 void loop()

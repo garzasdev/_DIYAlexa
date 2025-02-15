@@ -71,8 +71,10 @@ Intent WitAiChunkedUploader::getResults()
     if (status == 200)
     {
         StaticJsonDocument<500> filter;
-        filter["entities"]["device:device"][0]["value"] = true;
-        filter["entities"]["device:device"][0]["confidence"] = true;
+        // filter["entities"]["device:device"][0]["value"] = true;
+        // filter["entities"]["device:device"][0]["confidence"] = true;
+        filter["entities"]["area:room"][0]["value"] = true;
+        filter["entities"]["area:room"][0]["confidence"] = true;
         filter["text"] = true;
         filter["intents"][0]["name"] = true;
         filter["intents"][0]["confidence"] = true;
@@ -84,18 +86,21 @@ Intent WitAiChunkedUploader::getResults()
         const char *text = doc["text"];
         const char *intent_name = doc["intents"][0]["name"];
         float intent_confidence = doc["intents"][0]["confidence"];
-        const char *device_name = doc["entities"]["device:device"][0]["value"];
-        float device_confidence = doc["entities"]["device:device"][0]["confidence"];
+        // const char *device_name = doc["entities"]["device:device"][0]["value"];
+        // float device_confidence = doc["entities"]["device:device"][0]["confidence"];
+        const char *device_name = doc["entities"]["area:room"][0]["value"];
+Serial.printf("2: entity: %s\n", device_name);
+        float device_confidence = doc["entities"]["area:room"][0]["confidence"];
         const char *trait_value = doc["traits"]["wit$on_off"][0]["value"];
         float trait_confidence = doc["traits"]["wit$on_off"][0]["confidence"];
 
         return Intent{
-            .text = (text ? text : ""),
-            .intent_name = (intent_name ? intent_name : ""),
+            .text = (text ? text : "\0"),
+            .intent_name = (intent_name ? intent_name : "\0"),
             .intent_confidence = intent_confidence,
-            .device_name = (device_name ? device_name : ""),
+            .device_name = (device_name ? device_name : "\0"),
             .device_confidence = device_confidence,
-            .trait_value = (trait_value ? trait_value : ""),
+            .trait_value = (trait_value ? trait_value : "\0"),
             .trait_confidence = trait_confidence};
     }
     return Intent{};
