@@ -89,7 +89,7 @@ Intent WitAiChunkedUploader::getResults()
         // const char *device_name = doc["entities"]["device:device"][0]["value"];
         // float device_confidence = doc["entities"]["device:device"][0]["confidence"];
         const char *device_name = doc["entities"]["area:room"][0]["value"];
-Serial.printf("2: entity: %s\n", device_name);
+//Serial.printf("2: entity: %s\n", (strlen(device_name) > 0 ? device_name : "\0"));
         float device_confidence = doc["entities"]["area:room"][0]["confidence"];
         const char *trait_value = doc["traits"]["wit$on_off"][0]["value"];
         float trait_confidence = doc["traits"]["wit$on_off"][0]["confidence"];

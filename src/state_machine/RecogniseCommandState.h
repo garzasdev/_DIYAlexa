@@ -2,6 +2,7 @@
 #define _recognise_command_state_h_
 
 #include "States.h"
+#include "RGBLED.h"
 
 class I2SSampler;
 class WiFiClient;
@@ -10,11 +11,13 @@ class IndicatorLight;
 class Speaker;
 class IntentProcessor;
 class WitAiChunkedUploader;
+class RGBLED;
 
 class RecogniseCommandState : public State
 {
 private:
     I2SSampler *m_sample_provider;
+    RGBLED _rgb;
     unsigned long m_start_time;
     unsigned long m_elapsed_time;
     int m_last_audio_position;

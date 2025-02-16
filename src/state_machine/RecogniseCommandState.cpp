@@ -26,6 +26,10 @@ RecogniseCommandState::RecogniseCommandState(I2SSampler *sample_provider, Indica
 }
 void RecogniseCommandState::enterState()
 {
+    // can this be loaded on startup and reused? it causes a significant delay after the wakeword is recognized
+    // and caching it would speed the process us SIGNIFICANTLY
+    m_speech_recogniser = new WitAiChunkedUploader(COMMAND_RECOGNITION_ACCESS_KEY);
+
     // indicate that we are now recording audio
     m_indicator_light->setState(ON);
     m_speaker->playReady();
@@ -38,12 +42,14 @@ void RecogniseCommandState::enterState()
     uint32_t free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram before connection %d\n", free_ram);
 
-    m_speech_recogniser = new WitAiChunkedUploader(COMMAND_RECOGNITION_ACCESS_KEY);
+    // m_speech_recogniser = new WitAiChunkedUploader(COMMAND_RECOGNITION_ACCESS_KEY);
 
     Serial.println("Ready for action");
 
     free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram after connection %d\n", free_ram);
+
+    _rgb.SetOnlyState(LED_GRN, HIGH);
 }
 bool RecogniseCommandState::run()
 {
@@ -127,4 +133,5 @@ void RecogniseCommandState::exitState()
     m_speech_recogniser = NULL;
     uint32_t free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram after request %d\n", free_ram);
+    _rgb.TurnOffAllLEDs();
 }

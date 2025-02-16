@@ -78,6 +78,7 @@ IntentResult IntentProcessor::life()
 IntentResult IntentProcessor::processIntent(const Intent &intent)
 {
     byte _MAC[6];
+    bool CommandRecognized = false;
     char _ClientID[8] = "\0";
     char *_MQTTCommand1 = new char[128];
     char *_MQTTCommand2 = new char[128];
@@ -126,6 +127,7 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
             strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333CD65/");
             strcpy(_MQTTCommand2,"{\"SRC\":\"1\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
             strcpy(_MQTTTopic2, "/Home/Comm/C8C9A334D962/");
+            CommandRecognized = true;
         }
         if (intent.device_name == "north")
         {
@@ -176,6 +178,7 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
             strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333CD65/");
             strcpy(_MQTTCommand2,"{\"SRC\":\"1\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
             strcpy(_MQTTTopic2, "/Home/Comm/C8C9A334D962/");
+            CommandRecognized = true;
         }
     }
     if (intent.intent_name == "OpenGarage")
@@ -198,6 +201,7 @@ Serial.printf("Entity: %s\n", intent.device_name.c_str());
     delete [] _MQTTTopic1;
     delete [] _MQTTTopic2;
 
+    if (CommandRecognized) return SUCCESS;
     return FAILED;
 }
 

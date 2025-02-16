@@ -11,6 +11,12 @@
 #include "IntentProcessor.h"
 #include "Speaker.h"
 #include "IndicatorLight.h"
+#include "RGBLed.h"
+
+#ifndef rgb
+    RGBLED _rgb;
+#endif
+
 // #include "PubSubClient.h"
 
 // PubSubClient _MQTTClient;
@@ -83,8 +89,23 @@ void setup()
   Serial.begin(115200);
   delay(1000);
   Serial.println("Starting up");
+
+  // set up the indicator LED
+  pinMode(LED_RED, OUTPUT);
+  pinMode(LED_GRN, OUTPUT);
+  pinMode(LED_BLU, OUTPUT);
+  _rgb.SetOnlyStateWithDelay(LED_RED, HIGH, 100);
+  _rgb.SetOnlyStateWithDelay(LED_GRN, HIGH, 100);
+  _rgb.SetOnlyStateWithDelay(LED_BLU, HIGH, 100);
+
+//  _rgb.SetColorWithDelay((char *)"YEL", 6000);
+//  _rgb.SetColorWithDelay((char *)"PUR", 6000);
+//  _rgb.SetColorWithDelay((char *)"CYN", 6000);
+//  _rgb.SetColorWithDelay((char *)"WHT", 6000);
+
   // start up wifi
   // launch WiFi
+  digitalWrite(LED_BLU, HIGH);
   WiFi.macAddress(_MAC);
   Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", _MAC[0], _MAC[1], _MAC[2], _MAC[3], _MAC[4], _MAC[5]);
   // sprintf(_ClientID, "%02X%02X%02X", _MAC[3], _MAC[4], _MAC[5]);
@@ -100,6 +121,7 @@ void setup()
   Serial.printf("Total heap: %d\n", ESP.getHeapSize());
   Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
+  digitalWrite(LED_RED, HIGH);
   // startup SPIFFS for the wav files
   // SPIFFS.begin(true);
   SPIFFS.begin();
@@ -125,9 +147,9 @@ void setup()
 
   // and the intent processor
   IntentProcessor *intent_processor = new IntentProcessor(speaker);
-  intent_processor->addDevice("kitchen", GPIO_NUM_5);
-  intent_processor->addDevice("bedroom", GPIO_NUM_21);
-  intent_processor->addDevice("table", GPIO_NUM_23);
+//  intent_processor->addDevice("kitchen", GPIO_NUM_5);
+//  intent_processor->addDevice("bedroom", GPIO_NUM_21);
+//  intent_processor->addDevice("table", GPIO_NUM_23);
 
   // create our application
   Application *application = new Application(i2s_sampler, intent_processor, speaker, indicator_light);
@@ -142,7 +164,7 @@ void setup()
 #else
   i2s_sampler->start(I2S_NUM_0, adcI2SConfig, applicationTaskHandle);
 #endif
-
+  
   // // initialize MQTT
   // _MQTTClient.setClient(_WIFI);
   // _MQTTClient.setServer("192.168.3.8", 1883);
@@ -150,6 +172,10 @@ void setup()
   // {
   //   Serial.println("MQTT connected!");
   // }
+
+  digitalWrite(LED_GRN, LOW);
+  digitalWrite(LED_BLU, LOW);
+  digitalWrite(LED_RED, LOW);
 }
 
 void loop()

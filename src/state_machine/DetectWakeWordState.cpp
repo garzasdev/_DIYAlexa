@@ -17,12 +17,13 @@ DetectWakeWordState::DetectWakeWordState(I2SSampler *sample_provider)
     // some stats on performance
     m_average_detect_time = 0;
     m_number_of_runs = 0;
+    // _rgb.SetOnlyState(LED_BLU, HIGH);
 }
 void DetectWakeWordState::enterState()
 {
     // Create our neural network
     m_nn = new NeuralNetwork();
-    Serial.println("Created Neral Net");
+    Serial.println("Created Neural Net");
     // create our audio processor
     m_audio_processor = new AudioProcessor(AUDIO_LENGTH, WINDOW_SIZE, STEP_SIZE, POOLING_SIZE);
     Serial.println("Created audio processor");
@@ -64,6 +65,7 @@ bool DetectWakeWordState::run()
             m_number_of_detections = 0;
             // detected the wake word in several runs, move to the next state
             Serial.printf("P(%.2f): Here I am, brain the size of a planet...\n", output);
+            _rgb.SetOnlyState(LED_BLU, HIGH);
             return true;
         }
     }
@@ -79,4 +81,5 @@ void DetectWakeWordState::exitState()
     m_audio_processor = NULL;
     uint32_t free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram after DetectWakeWord cleanup %d\n", free_ram);
+    // _rgb.TurnOffAllLEDs();
 }
