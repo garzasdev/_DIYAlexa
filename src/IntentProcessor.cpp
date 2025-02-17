@@ -123,9 +123,9 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
     {
         if (intent.device_name == "living room")
         {
-            strcpy(_MQTTCommand1,"{\"SRC\":\"1\",\"DST\":\"C8C9A333CD65\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
+            strcpy(_MQTTCommand1,"{\"SRC\":\"VA\",\"DST\":\"C8C9A333CD65\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
             strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333CD65/");
-            strcpy(_MQTTCommand2,"{\"SRC\":\"1\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
+            strcpy(_MQTTCommand2,"{\"SRC\":\"VA\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
             strcpy(_MQTTTopic2, "/Home/Comm/C8C9A334D962/");
             CommandRecognized = true;
         }
@@ -159,7 +159,11 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
         }
         if (intent.device_name == "master bedroom")
         {
-            
+            strcpy(_MQTTCommand1,"{\"SRC\":\"VA\",\"DST\":\"08F9E05FB923\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
+            strcpy(_MQTTTopic1, "/Home/Comm/08F9E05FB923/");
+            strcpy(_MQTTCommand2,"{\"SRC\":\"VA\",\"DST\":\"C8C9A33527C6\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
+            strcpy(_MQTTTopic2, "/Home/Comm/C8C9A33527C6/");
+            CommandRecognized = true;
         }
         if (intent.device_name == "basement")
         {
@@ -174,10 +178,18 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
     {
         if (intent.device_name == "living room")
         {
-            strcpy(_MQTTCommand1,"{\"SRC\":\"1\",\"DST\":\"C8C9A333CD65\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
+            strcpy(_MQTTCommand1,"{\"SRC\":\"VA\",\"DST\":\"C8C9A333CD65\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
             strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333CD65/");
-            strcpy(_MQTTCommand2,"{\"SRC\":\"1\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
+            strcpy(_MQTTCommand2,"{\"SRC\":\"VA\",\"DST\":\"C8C9A334D962\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
             strcpy(_MQTTTopic2, "/Home/Comm/C8C9A334D962/");
+            CommandRecognized = true;
+        }
+        if (intent.device_name == "master bedroom")
+        {
+            strcpy(_MQTTCommand1,"{\"SRC\":\"VA\",\"DST\":\"08F9E05FB923\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
+            strcpy(_MQTTTopic1, "/Home/Comm/08F9E05FB923/");
+            strcpy(_MQTTCommand2,"{\"SRC\":\"VA\",\"DST\":\"C8C9A33527C6\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"DOWN\"}");
+            strcpy(_MQTTTopic2, "/Home/Comm/C8C9A33527C6/");
             CommandRecognized = true;
         }
     }

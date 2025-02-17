@@ -28,6 +28,9 @@ void RecogniseCommandState::enterState()
 {
     // can this be loaded on startup and reused? it causes a significant delay after the wakeword is recognized
     // and caching it would speed the process us SIGNIFICANTLY
+    // one thing to watch out: when the recogniser is initialized, it opens a connectiong to wit.ai
+    //      will the connection stay alive in periods of no use?
+    //      could anything be sent to wit.ai with no wakeword active?
     m_speech_recogniser = new WitAiChunkedUploader(COMMAND_RECOGNITION_ACCESS_KEY);
 
     // indicate that we are now recording audio

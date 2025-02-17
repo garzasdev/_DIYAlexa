@@ -6,7 +6,7 @@ WitAiChunkedUploader::WitAiChunkedUploader(const char *access_key)
 {
     m_wifi_client = new WiFiClientSecure();
     m_wifi_client->setInsecure();
-    m_wifi_client->connect("api.wit.ai", 443);
+    m_wifi_client->connect("api.wit.ai", 443); // approx 1.5s to make a connection
     char authorization_header[100];
     snprintf(authorization_header, 100, "authorization: Bearer %s", access_key);
     m_wifi_client->println("POST /speech?v=20200927 HTTP/1.1");
