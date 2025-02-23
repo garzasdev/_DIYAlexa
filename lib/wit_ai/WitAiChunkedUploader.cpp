@@ -80,6 +80,8 @@ Intent WitAiChunkedUploader::getResults()
         filter["intents"][0]["confidence"] = true;
         filter["traits"]["wit$on_off"][0]["value"] = true;
         filter["traits"]["wit$on_off"][0]["confidence"] = true;
+        filter["entities"]["wit$duration:duration"][0]["normalized"]["value"] = true;
+        filter["entities"]["wit$duration:duration"][0]["confidence"] = true;
         StaticJsonDocument<500> doc;
         deserializeJson(doc, *m_wifi_client, DeserializationOption::Filter(filter));
 
@@ -90,6 +92,8 @@ Intent WitAiChunkedUploader::getResults()
         // float device_confidence = doc["entities"]["device:device"][0]["confidence"];
         const char *device_name = doc["entities"]["area:room"][0]["value"];
 //Serial.printf("2: entity: %s\n", (strlen(device_name) > 0 ? device_name : "\0"));
+        float duration_value = doc["entities"]["wit$duration:duration"][0]["normalized"]["value"];
+        float duration_confidence = doc["entities"]["wit$duration:duration"][0]["confidence"];
         float device_confidence = doc["entities"]["area:room"][0]["confidence"];
         const char *trait_value = doc["traits"]["wit$on_off"][0]["value"];
         float trait_confidence = doc["traits"]["wit$on_off"][0]["confidence"];
@@ -101,7 +105,9 @@ Intent WitAiChunkedUploader::getResults()
             .device_name = (device_name ? device_name : "\0"),
             .device_confidence = device_confidence,
             .trait_value = (trait_value ? trait_value : "\0"),
-            .trait_confidence = trait_confidence};
+            .trait_confidence = trait_confidence,
+            .duration_value = duration_value,
+            .duration_confidence = duration_confidence};
     }
     return Intent{};
 }

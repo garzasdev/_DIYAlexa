@@ -1,0 +1,11 @@
+ways to potentially speed up operations
+
+connect to wit.ai earlier
+    make sure device doesn't send a constant stream of data to wit.ai
+
+create model.cc files with common utterances that can be searched and acted upon, much like the wake word is recognized almost instantly
+
+utilize a sensor so that when a person is detected in close proximity, a connection is established to wit.ai
+
+record all audio and when there's a pause, analyze it for the wake word and then send the remainder as a command. this way, users can say
+    "marvin, open the shades(pause)" instead of "marvin" *wait while a connection to wit.ai is established* "<command>"

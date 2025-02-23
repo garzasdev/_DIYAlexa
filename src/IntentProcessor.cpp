@@ -94,7 +94,17 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
         Serial.println("Cound not connect to MQTT");
         return FAILED;
     }
-
+Serial.println("\n--------------------");
+Serial.printf("Text: %s\n", intent.text.c_str());
+Serial.printf("Intent Name: %s\n", intent.intent_name.c_str());
+Serial.printf("Intent Confidence: %f\n", intent.intent_confidence);
+Serial.printf("Device Name: %s\n", intent.device_name.c_str());
+Serial.printf("Device Confidence: %f\n", intent.device_confidence);
+Serial.printf("Trait Value: %s\n", intent.trait_value.c_str());
+Serial.printf("Trait Confidence: %f\n", intent.trait_confidence);
+Serial.printf("Duration Value: %f\n", intent.duration_value);
+Serial.printf("Duration Confidence: %f\n", intent.duration_confidence);
+Serial.println("--------------------\n");
     if (intent.text.empty())
     {
         Serial.println("No text recognised");
@@ -107,18 +117,18 @@ IntentResult IntentProcessor::processIntent(const Intent &intent)
         return FAILED;
     }
     Serial.printf("Intent is %s\n", intent.intent_name.c_str());
-    if (intent.intent_name == "Turn_on_device")
-    {
-        return turnOnDevice(intent);
-    }
-    if (intent.intent_name == "Tell_joke")
-    {
-        return tellJoke();
-    }
-    if (intent.intent_name == "Life")
-    {
-        return life();
-    }
+    // if (intent.intent_name == "Turn_on_device")
+    // {
+    //     return turnOnDevice(intent);
+    // }
+    // if (intent.intent_name == "Tell_joke")
+    // {
+    //     return tellJoke();
+    // }
+    // if (intent.intent_name == "Life")
+    // {
+    //     return life();
+    // }
     if (intent.intent_name == "RaiseShades")
     {
         if (intent.device_name == "living room")
@@ -201,10 +211,38 @@ Serial.printf("Entity: %s\n", intent.device_name.c_str());
     {
 Serial.printf("Entity: %s\n", intent.device_name.c_str());
     }
+    if (intent.intent_name == "LightsOn")
+    {
+        if (intent.device_name == "stair lights")
+        {
+            strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333B68D/");
+            // turn the strip on indefinitely
+            strcpy(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"C8C9A333B68D\", \"RST\":2,\"VBL\":\"SETSTRIPSTATE\",\"VAL\":\"-1\"}");
+            if (intent.duration_confidence > 0.95)
+            {
+                unsigned long _duration = intent.duration_value / 60;
+                // a duration was specified, so we need to keep the strip on for that amount of time
+                sprintf(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"C8C9A333B68D\", \"RST\":2,\"VBL\":\"SETSTRIPSTATE\",\"VAL\":\"%lu\"}", _duration);
+            }
 
-    _MQTTClient.publish(_MQTTTopic1, _MQTTCommand1);
+            CommandRecognized = true;
+        }
+    }
+    if (intent.intent_name == "LightsOff")
+    {
+        if (intent.device_name == "stair lights")
+        {
+            strcpy(_MQTTTopic1, "/Home/Comm/C8C9A333B68D/");
+            // turn the strip off indefinitely
+            strcpy(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"C8C9A333B68D\", \"RST\":2,\"VBL\":\"SETSTRIPSTATE\",\"VAL\":\"0\"}");
+
+            CommandRecognized = true;
+        }
+    }
+
+    if (strlen(_MQTTTopic1) > 0 && strlen(_MQTTCommand1) > 0 ) _MQTTClient.publish(_MQTTTopic1, _MQTTCommand1);
     _MQTTClient.loop();
-    _MQTTClient.publish(_MQTTTopic2, _MQTTCommand2);
+    if (strlen(_MQTTTopic2) > 0 && strlen(_MQTTCommand2) > 0 ) _MQTTClient.publish(_MQTTTopic2, _MQTTCommand2);
     _MQTTClient.loop();
     _MQTTClient.disconnect();
 
