@@ -22,11 +22,6 @@ NOTES
     RGBLED _rgb;
 #endif
 
-// #include "PubSubClient.h"
-
-// PubSubClient _MQTTClient;
-// WiFiClient _WIFI;
-
 // i2s config for using the internal ADC
 i2s_config_t adcI2SConfig = {
     .mode = (i2s_mode_t)(I2S_MODE_MASTER | I2S_MODE_RX | I2S_MODE_ADC_BUILT_IN),
@@ -89,7 +84,6 @@ void applicationTask(void *param)
 void setup()
 {
   byte _MAC[6];
-  // char _ClientID[8] = "\0";
 
   Serial.begin(115200);
   while (!Serial) { yield(); }
@@ -99,22 +93,8 @@ void setup()
   // set up the indicator LED
   _rgb.begin(STRIP_LED_PIN);
   _rgb.SetStateStartup();
-// while(1) {yield();}
-//  pinMode(LED_RED, OUTPUT);
-//  pinMode(LED_GRN, OUTPUT);
-//  pinMode(LED_BLU, OUTPUT);
-//  _rgb.SetOnlyStateWithDelay(LED_RED, HIGH, 100);
-//  _rgb.SetOnlyStateWithDelay(LED_GRN, HIGH, 100);
-//  _rgb.SetOnlyStateWithDelay(LED_BLU, HIGH, 100);
-
-//  _rgb.SetColorWithDelay((char *)"YEL", 6000);
-//  _rgb.SetColorWithDelay((char *)"PUR", 6000);
-//  _rgb.SetColorWithDelay((char *)"CYN", 6000);
-//  _rgb.SetColorWithDelay((char *)"WHT", 6000);
-
   // start up wifi
   // launch WiFi
-//  digitalWrite(LED_BLU, HIGH);
   _rgb.SetColor((char *)"BLU");
 
   WiFi.macAddress(_MAC);
@@ -132,7 +112,6 @@ void setup()
   Serial.printf("Total heap: %d\n", ESP.getHeapSize());
   Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
-//  digitalWrite(LED_RED, HIGH);
   _rgb.SetColor((char *)"RED");
 
   // startup SPIFFS for the wav files
@@ -178,17 +157,6 @@ void setup()
   i2s_sampler->start(I2S_NUM_0, adcI2SConfig, applicationTaskHandle);
 #endif
   
-  // // initialize MQTT
-  // _MQTTClient.setClient(_WIFI);
-  // _MQTTClient.setServer("192.168.3.8", 1883);
-  // if (_MQTTClient.connect(_ClientID))
-  // {
-  //   Serial.println("MQTT connected!");
-  // }
-
-//  digitalWrite(LED_GRN, LOW);
-//  digitalWrite(LED_BLU, LOW);
-//  digitalWrite(LED_RED, LOW);
   _rgb.SetStateOff();
 }
 

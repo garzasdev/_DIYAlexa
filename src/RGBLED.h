@@ -37,12 +37,6 @@ class RGBLED
         void SetColorWithDelay(uint32_t HSVColor, int Delay);
         void SetColorWithDelay(int R, int G, int B, int Delay);
         void SetColorWithDelay(char *Color, int Brightness = 100, int Delay = 0);
-//        void SetState(int LEDPin, bool LEDState);
-//        void SetOnlyState(int LEDPin, bool LEDState);
-//        void SetOnlyStateWithDelay(int LEDPin, bool LEDState, int DelayTime);
-//        void SetColor(char *Color);
-//        void SetColorWithDelay(char *Color, int DelayTime);
-//        void TurnOffAllLEDs();
     private:
         Adafruit_NeoPixel *strip;
         void _Delay(int ms);
