@@ -52,7 +52,7 @@ void RecogniseCommandState::enterState()
     free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram after connection %d\n", free_ram);
 
-    _rgb.SetOnlyState(LED_GRN, HIGH);
+//    _rgb.SetOnlyState(LED_GRN, HIGH);
 }
 bool RecogniseCommandState::run()
 {

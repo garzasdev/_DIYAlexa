@@ -65,7 +65,7 @@ bool DetectWakeWordState::run()
             m_number_of_detections = 0;
             // detected the wake word in several runs, move to the next state
             Serial.printf("P(%.2f): Here I am, brain the size of a planet...\n", output);
-            _rgb.SetOnlyState(LED_BLU, HIGH);
+//            _rgb.SetOnlyState(LED_BLU, HIGH);
             return true;
         }
     }

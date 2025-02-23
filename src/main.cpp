@@ -87,16 +87,19 @@ void setup()
   // char _ClientID[8] = "\0";
 
   Serial.begin(115200);
+  while (!Serial) { yield(); }
   delay(1000);
   Serial.println("Starting up");
 
   // set up the indicator LED
-  pinMode(LED_RED, OUTPUT);
-  pinMode(LED_GRN, OUTPUT);
-  pinMode(LED_BLU, OUTPUT);
-  _rgb.SetOnlyStateWithDelay(LED_RED, HIGH, 100);
-  _rgb.SetOnlyStateWithDelay(LED_GRN, HIGH, 100);
-  _rgb.SetOnlyStateWithDelay(LED_BLU, HIGH, 100);
+  _rgb.begin(STRIP_LED_PIN);
+while (1) {yield();}
+//  pinMode(LED_RED, OUTPUT);
+//  pinMode(LED_GRN, OUTPUT);
+//  pinMode(LED_BLU, OUTPUT);
+//  _rgb.SetOnlyStateWithDelay(LED_RED, HIGH, 100);
+//  _rgb.SetOnlyStateWithDelay(LED_GRN, HIGH, 100);
+//  _rgb.SetOnlyStateWithDelay(LED_BLU, HIGH, 100);
 
 //  _rgb.SetColorWithDelay((char *)"YEL", 6000);
 //  _rgb.SetColorWithDelay((char *)"PUR", 6000);
@@ -105,7 +108,7 @@ void setup()
 
   // start up wifi
   // launch WiFi
-  digitalWrite(LED_BLU, HIGH);
+//  digitalWrite(LED_BLU, HIGH);
   WiFi.macAddress(_MAC);
   Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", _MAC[0], _MAC[1], _MAC[2], _MAC[3], _MAC[4], _MAC[5]);
   // sprintf(_ClientID, "%02X%02X%02X", _MAC[3], _MAC[4], _MAC[5]);
@@ -121,7 +124,7 @@ void setup()
   Serial.printf("Total heap: %d\n", ESP.getHeapSize());
   Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
-  digitalWrite(LED_RED, HIGH);
+//  digitalWrite(LED_RED, HIGH);
   // startup SPIFFS for the wav files
   // SPIFFS.begin(true);
   SPIFFS.begin();
@@ -173,9 +176,9 @@ void setup()
   //   Serial.println("MQTT connected!");
   // }
 
-  digitalWrite(LED_GRN, LOW);
-  digitalWrite(LED_BLU, LOW);
-  digitalWrite(LED_RED, LOW);
+//  digitalWrite(LED_GRN, LOW);
+//  digitalWrite(LED_BLU, LOW);
+//  digitalWrite(LED_RED, LOW);
 }
 
 void loop()
