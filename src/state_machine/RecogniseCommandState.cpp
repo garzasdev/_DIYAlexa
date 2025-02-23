@@ -53,6 +53,8 @@ void RecogniseCommandState::enterState()
     Serial.printf("Free ram after connection %d\n", free_ram);
 
 //    _rgb.SetOnlyState(LED_GRN, HIGH);
+    _rgb.SetColor((char *)"GRN");
+    _rgb.SetStateOff();
 }
 bool RecogniseCommandState::run()
 {
@@ -136,5 +138,6 @@ void RecogniseCommandState::exitState()
     m_speech_recogniser = NULL;
     uint32_t free_ram = esp_get_free_heap_size();
     Serial.printf("Free ram after request %d\n", free_ram);
-    _rgb.TurnOffAllLEDs();
+//    _rgb.TurnOffAllLEDs();
+    _rgb.SetStateOff();
 }

@@ -1,3 +1,8 @@
+/*
+NOTES
+  on first load of a new device, in Setup(), make sure SPIFFS.begin(true) is run instead of just SPIFFS.begin(). this will load the necessary files into the device's memory. after that, it's not necessary to run SPIFFS.begin(true). run SPIFFS.begin() instead
+*/
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <driver/i2s.h>
@@ -93,7 +98,8 @@ void setup()
 
   // set up the indicator LED
   _rgb.begin(STRIP_LED_PIN);
-while (1) {yield();}
+  _rgb.SetStateStartup();
+// while(1) {yield();}
 //  pinMode(LED_RED, OUTPUT);
 //  pinMode(LED_GRN, OUTPUT);
 //  pinMode(LED_BLU, OUTPUT);
@@ -109,6 +115,8 @@ while (1) {yield();}
   // start up wifi
   // launch WiFi
 //  digitalWrite(LED_BLU, HIGH);
+  _rgb.SetColor((char *)"BLU");
+
   WiFi.macAddress(_MAC);
   Serial.printf("%02X:%02X:%02X:%02X:%02X:%02X\n", _MAC[0], _MAC[1], _MAC[2], _MAC[3], _MAC[4], _MAC[5]);
   // sprintf(_ClientID, "%02X%02X%02X", _MAC[3], _MAC[4], _MAC[5]);
@@ -125,6 +133,8 @@ while (1) {yield();}
   Serial.printf("Free heap: %d\n", ESP.getFreeHeap());
 
 //  digitalWrite(LED_RED, HIGH);
+  _rgb.SetColor((char *)"RED");
+
   // startup SPIFFS for the wav files
   // SPIFFS.begin(true);
   SPIFFS.begin();
@@ -179,6 +189,7 @@ while (1) {yield();}
 //  digitalWrite(LED_GRN, LOW);
 //  digitalWrite(LED_BLU, LOW);
 //  digitalWrite(LED_RED, LOW);
+  _rgb.SetStateOff();
 }
 
 void loop()
