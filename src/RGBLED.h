@@ -4,7 +4,6 @@
 #include "config.h"
 #include <Adafruit_NeoPixel.h>
 
-
 // LEDs
 // #define LED_RED 5
 // // #define LED_GRN 18
@@ -38,7 +37,7 @@ class RGBLED
         void SetColorWithDelay(int R, int G, int B, int Delay);
         void SetColorWithDelay(char *Color, int Brightness = 100, int Delay = 0);
     private:
-        Adafruit_NeoPixel *strip;
+        // Adafruit_NeoPixel *strip;
         void _Delay(int ms);
 };
 #endif

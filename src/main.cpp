@@ -1,5 +1,6 @@
 /*
 NOTES
+  be sure to upload files to spiffs. to do this, in platformio, go to the platformio home. under Platform, choose Upload Filesystem Image
   on first load of a new device, in Setup(), make sure SPIFFS.begin(true) is run instead of just SPIFFS.begin(). this will load the necessary files into the device's memory. after that, it's not necessary to run SPIFFS.begin(true). run SPIFFS.begin() instead
 */
 
