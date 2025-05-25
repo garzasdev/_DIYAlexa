@@ -104,6 +104,8 @@ Serial.printf("Trait Value: %s\n", intent.trait_value.c_str());
 Serial.printf("Trait Confidence: %f\n", intent.trait_confidence);
 Serial.printf("Duration Value: %f\n", intent.duration_value);
 Serial.printf("Duration Confidence: %f\n", intent.duration_confidence);
+Serial.printf("Color Value: %s\n", intent.color_value.c_str());
+Serial.printf("Color Confidence: %f\n", intent.color_confidence);
 Serial.println("--------------------\n");
     if (intent.text.empty())
     {
@@ -117,20 +119,12 @@ Serial.println("--------------------\n");
         return FAILED;
     }
     Serial.printf("Intent is %s\n", intent.intent_name.c_str());
-    // if (intent.intent_name == "Turn_on_device")
-    // {
-    //     return turnOnDevice(intent);
-    // }
-    // if (intent.intent_name == "Tell_joke")
-    // {
-    //     return tellJoke();
-    // }
-    // if (intent.intent_name == "Life")
-    // {
-    //     return life();
-    // }
     if (intent.intent_name == "RaiseShades")
     {
+        if (intent.device_name == "all shades")
+        {
+            
+        }
         if (intent.device_name == "living room")
         {
             strcpy(_MQTTCommand1,"{\"SRC\":\"VA\",\"DST\":\"C8C9A333CD65\", \"RST\":2,\"VBL\":\"MOVESHADE\",\"VAL\":\"UP\"}");
@@ -238,6 +232,39 @@ Serial.printf("Entity: %s\n", intent.device_name.c_str());
 
             CommandRecognized = true;
         }
+    }
+    if (intent.intent_name == "HeadboardOn")
+    {
+        strcpy(_MQTTTopic1, "/Home/Comm/E8DB849836A8/");
+        if (strlen(intent.color_value.c_str()) > 0 && intent.color_confidence > 0.90)
+        {
+            // a color was specified, so we need to set the strip to that color
+            sprintf(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"E8DB849836A8\", \"RST\":2,\"VBL\":\"HUE\",\"VAL\":\"%s\"}", intent.color_value.c_str());
+            CommandRecognized = true;
+        }
+        else if (intent.duration_value > 0 && intent.duration_confidence > 0.95)
+        {
+            unsigned long _duration = intent.duration_value / 60;
+
+            strcpy(_MQTTTopic2, "/Home/Comm/E8DB849836A8/");
+            // a duration was specified, so we need to keep the strip on for that amount of time
+            sprintf(_MQTTCommand2, "{\"SRC\":\"VA\",\"DST\":\"E8DB849836A8\", \"RST\":2,\"VBL\":\"SETSTRIPSTATE\",\"VAL\":\"%lu\"}", _duration);
+            CommandRecognized = true;
+        }
+        else
+        {
+            // we're just turning the headboard on
+            sprintf(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"E8DB849836A8\", \"RST\":2,\"VBL\":\"SetLEDStripState\",\"VAL\":\"1\"}");
+            CommandRecognized = true;
+        }
+    }
+    if (intent.intent_name == "HeadboardOff")
+    {
+        strcpy(_MQTTTopic1, "/Home/Comm/E8DB849836A8/");
+        // turn the strip off indefinitely
+        strcpy(_MQTTCommand1, "{\"SRC\":\"VA\",\"DST\":\"E8DB849836A8\", \"RST\":2,\"VBL\":\"SetLEDStripState\",\"VAL\":\"0\"}");
+
+        CommandRecognized = true;
     }
 
     if (strlen(_MQTTTopic1) > 0 && strlen(_MQTTCommand1) > 0 ) _MQTTClient.publish(_MQTTTopic1, _MQTTCommand1);

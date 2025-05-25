@@ -82,6 +82,8 @@ Intent WitAiChunkedUploader::getResults()
         filter["traits"]["wit$on_off"][0]["confidence"] = true;
         filter["entities"]["wit$duration:duration"][0]["normalized"]["value"] = true;
         filter["entities"]["wit$duration:duration"][0]["confidence"] = true;
+        filter["entities"]["SetColor:SetColor"][0]["value"] = true;
+        filter["entities"]["SetColor:SetColor"][0]["confidence"] = true;
         StaticJsonDocument<500> doc;
         deserializeJson(doc, *m_wifi_client, DeserializationOption::Filter(filter));
 
@@ -97,8 +99,11 @@ Intent WitAiChunkedUploader::getResults()
         float device_confidence = doc["entities"]["area:room"][0]["confidence"];
         const char *trait_value = doc["traits"]["wit$on_off"][0]["value"];
         float trait_confidence = doc["traits"]["wit$on_off"][0]["confidence"];
+        const char *color_value = doc["entities"]["SetColor:SetColor"][0]["value"];
+        float color_confidence = doc["entities"]["SetColor:SetColor"][0]["confidence"];
 
-        return Intent{
+        return Intent
+        {
             .text = (text ? text : "\0"),
             .intent_name = (intent_name ? intent_name : "\0"),
             .intent_confidence = intent_confidence,
@@ -107,7 +112,10 @@ Intent WitAiChunkedUploader::getResults()
             .trait_value = (trait_value ? trait_value : "\0"),
             .trait_confidence = trait_confidence,
             .duration_value = duration_value,
-            .duration_confidence = duration_confidence};
+            .duration_confidence = duration_confidence,
+            .color_value = (color_value ? color_value : "\0"),
+            .color_confidence = color_confidence
+        };
     }
     return Intent{};
 }
